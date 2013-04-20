@@ -16,8 +16,6 @@
 	    this.initialize.apply(this, arguments);
 	}
 	
-	_.extend()
-	
 	/*not observable object*/
 	_.extend(Object.prototype, Backbone.Events, {
 		set : function(key, val, options){

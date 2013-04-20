@@ -2,7 +2,7 @@
 	Scenario : call Behaviour.AttachListener(), then trigger event(s), then test results
 */
 
-BehaviourTest = {
+BehaviourTest1 = TestCase.extend({
 	results : {
 		'testLink' : null, 
 		'testClosure' : null, 
@@ -39,13 +39,6 @@ BehaviourTest = {
 		 	return value > 0;
 		 }
 		},
-	alertResults : function(testCaseName){
-		var checker = this.checkers[testCaseName];
-		if (!checker(this.results[testCaseName]))
-			console.log('test case : ' + testCaseName + ' failure');
-		else 
-			console.log('test case : ' + testCaseName + ' success');
-	},
 	testLink : function(){
 		var x,y;
 		var self = this;
@@ -191,17 +184,22 @@ BehaviourTest = {
 		y.trigger('change');
 		z.trigger('change');
 		this.alertResults('testDispatchingReceiver');	
-	}
-}
+	},
+	header : function(){
+		console.log('------------------------TEST CASE 1----------------------');
+		console.log('------------------------TESTING Behaviour.js-------------');
+		console.log('Scenario : Behaviour.callAttachLink(), then trigger event(s), then test results');
+	},
+	execute : function(){
+		this.header();
 
-console.log('------------------------TEST CASE 1----------------------');
-console.log('------------------------TESTING Behaviour.js-------------');
-console.log('Scenario : Behaviour.callAttachLink(), then trigger event(s), then test results');
-BehaviourTest.testLink();
-BehaviourTest.testClosure();
-BehaviourTest.testClosingReceiver();
-BehaviourTest.testClosingDispatcher();
-BehaviourTest.testTuple();
-BehaviourTest.testDispatcher();
-BehaviourTest.testReceiver();
-BehaviourTest.testDispatchingReceiver();
+		this.testLink();
+		this.testClosure();
+		this.testClosingReceiver();
+		this.testClosingDispatcher();
+		this.testTuple();
+		this.testDispatcher();
+		this.testReceiver();
+		this.testDispatchingReceiver();
+	}
+});

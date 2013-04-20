@@ -2,7 +2,7 @@
 Scenario : call Behaviour.AttachListeners(), then trigger event(s), 
 and execution of all listeners is success condition of this test
 */
-BehaviourTest2 = {
+BehaviourTest2 = TestCase.extend({
 	results : {
 		'testLinks' : { a : null, b : null } , 
 		'testClosures' : { a : null, b : null }, 
@@ -38,13 +38,6 @@ BehaviourTest2 = {
 		'testDispatchingReceivers' : function(value){
 			return (value.a === 1 && value.b === 1);
 		}
-	},
-	alertResults : function(testCaseName){
-		var checker = this.checkers[testCaseName];
-		if (!checker(this.results[testCaseName]))
-			console.log('test case : ' + testCaseName + ' failure');
-		else 
-			console.log('test case : ' + testCaseName + ' success');
 	},
 	testLinks : function(){
 		var x,y,w,q;
@@ -306,17 +299,23 @@ BehaviourTest2 = {
 		u.trigger('sync');
 
 		this.alertResults('testDispatchingReceivers');
+	},
+	header : function(){
+		console.log('------------------------TEST CASE 2----------------------');
+		console.log('------------------------TESTING Behaviour.js-------------');
+		console.log('Scenario : Behaviour.callAttachLinks(), then trigger event(s), then test results');		
+	},
+	execute : function(){
+		this.header();
+		
+		this.testLinks();
+		this.testClosures();
+		this.testClosingReceivers();
+		this.testClosingDispatchers();
+		this.testTuples();
+		this.testDispatchers();
+		this.testReceivers();
+		this.testDispatchingReceivers();		
 	}
-}
+})
 
-console.log('------------------------TEST CASE 2----------------------');
-console.log('------------------------TESTING Behaviour.js-------------');
-console.log('Scenario : Behaviour.callAttachLinks(), then trigger event(s), then test results');
-BehaviourTest2.testLinks();
-BehaviourTest2.testClosures();
-BehaviourTest2.testClosingReceivers();
-BehaviourTest2.testClosingDispatchers();
-BehaviourTest2.testTuples();
-BehaviourTest2.testDispatchers();
-BehaviourTest2.testReceivers();
-BehaviourTest2.testDispatchingReceivers();

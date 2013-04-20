@@ -2,7 +2,7 @@
 	Scenario : call Behaviour.AttachListeners() and Behaviour.detachListener() then
 	stopping execution of all listeners is success condition of this test;
 */
-BehaviourTest3 = {
+BehaviourTest3 = TestCase.extend({
 	results : {
 		'testLinks' : { a : null, b : null } , 
 		'testClosures' : { a : null, b : null }, 
@@ -38,13 +38,6 @@ BehaviourTest3 = {
 		'testDispatchingReceivers' : function(value){
 			return (value.a === 0 && value.b === 0);
 		}
-	},
-	alertResults : function(testCaseName){
-		var checker = this.checkers[testCaseName];
-		if (!checker(this.results[testCaseName]))
-			console.log('test case : ' + testCaseName + ' failure');
-		else 
-			console.log('test case : ' + testCaseName + ' success');
 	},
 	testLinks : function(){
 		var x,y,w,q;
@@ -314,18 +307,25 @@ BehaviourTest3 = {
 		u.trigger('sync');
 
 		this.alertResults('testDispatchingReceivers');
+	},
+	header : function(){
+		console.log('------------------------TEST CASE 3----------------------');
+		console.log('------------------------TESTING Behaviour.js-------------');
+		console.log('Scenario : call Behaviour.AttachListeners() and Behaviour.detachListener() then,' + 	
+			'stopping execution of all listeners is success condition of this test;');
+	},
+	execute : function(){
+		this.header();
+		
+		this.testLinks();
+		this.testClosures();
+		this.testClosingReceivers();
+		this.testClosingDispatchers();
+		this.testTuples();
+		this.testDispatchers();
+		this.testReceivers();
+		this.testDispatchingReceivers();
 	}
-}
+})
 
-console.log('------------------------TEST CASE 3----------------------');
-console.log('------------------------TESTING Behaviour.js-------------');
-console.log('Scenario : call Behaviour.AttachListeners() and Behaviour.detachListener() then,' + 	
-	'stopping execution of all listeners is success condition of this test;');
-BehaviourTest3.testLinks();
-BehaviourTest3.testClosures();
-BehaviourTest3.testClosingReceivers();
-BehaviourTest3.testClosingDispatchers();
-BehaviourTest3.testTuples();
-BehaviourTest3.testDispatchers();
-BehaviourTest3.testReceivers();
-BehaviourTest3.testDispatchingReceivers();
+

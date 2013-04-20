@@ -13,10 +13,25 @@
   <script src="/assets/backbone-extensions/backboneObject.js"></script>
   
   <script src="/js/application/Behaviour.js" type="text/javascript"></script>
-  <script src="BehaviourTest.js" type="text/javascript"></script>
+  <script src="TestCase.js" type="text/javascript"></script>
+  <script src="BehaviourTest1.js" type="text/javascript"></script>
   <script src="BehaviourTest2.js" type="text/javascript"></script>
   <script src="BehaviourTest3.js" type="text/javascript"></script>
   <script src="BehaviourTest4.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      var testName;
+
+      tests = _.map(_.range(4), function(name, index, list){
+        testClassName =  'BehaviourTest' + (name + 1);
+        return new window[testClassName]();
+      });
+
+      test = _.each(tests, function(test){
+        test.execute();
+      });
+    });
+  </script>
 </head>
 <body>
 </body>
