@@ -188,7 +188,7 @@ BehaviourTest1 = TestCase.extend({
 	header : function(){
 		console.log('------------------------TEST CASE 1----------------------');
 		console.log('------------------------TESTING Behaviour.js-------------');
-		console.log('Scenario : Behaviour.callAttachLink(), then trigger event(s), then test results');
+		console.log('Scenario : Behaviour.callAttachListener(), then trigger event(s), then test results');
 	},
 	execute : function(){
 		this.header();

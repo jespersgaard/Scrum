@@ -238,7 +238,7 @@ BehaviourTest4 = TestCase.extend({
 		], {bindOnAttach : true});
 
 		y.trigger('change');
-		z.trigger('change');
+		z.trigger('sync');
 		this.alertResults('testDispatchingReceiver');	
 	},
 	header : function(){

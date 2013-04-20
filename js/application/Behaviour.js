@@ -158,6 +158,7 @@ Behaviour = Backbone.Object.extend({
 				listener[linkName] = null;
 				delete this._binds[fullName];
 			}, this);
+			this.listeners[listenerName] = null;
 		}
 		else {
 			if (!(link = this.listeners[listenerName][linkName]))
