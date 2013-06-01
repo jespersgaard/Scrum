@@ -13,6 +13,6 @@ class AuthController extends Controller {
 		Yii::app()->user->logout();
 		$cookies = Yii::app()->request->getCookies();
 		$cookies->remove('login');
-		//$cookies->remove('state-cookie');
+		$cookies->remove('state-cookie');
 	}	
 }

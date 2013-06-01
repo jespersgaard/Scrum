@@ -90,7 +90,6 @@ Ext.define('Scrum.view.Viewport', {
             var loginForm,registerForm,tabpanel;
 
             if (Ext.util.Cookies.get('login')){
-
                 this.showMainPage();
             }
             else {

@@ -43,6 +43,9 @@ Ext.define('Scrum.controller.TopPanel', {
 			},
 			'scrum-toppanel button[action=sprints]' : {
 				click : { fn : this.onSprintsClick, scope : this}
+			},
+			'scrum-account-dropdown > menuitem[action=logout]' : {
+				click : { fn : this.Logout, scope : this}
 			}
 		});
 	},
@@ -180,5 +183,15 @@ Ext.define('Scrum.controller.TopPanel', {
 	},
 	showSprintManager : function(sprintManager){
 		sprintManager.fireEvent('viewSprintManager', this.selectedProject);
+	},
+	Logout : function(){
+		var conn = Ext.create('Ext.data.Connection');
+		/**conn.request({
+			url : '/auth/logout',
+			success : function(){
+				this.viewport.removeAll();
+				this.viewport.showAuthGroup();
+			}
+		})*/
 	}
 })

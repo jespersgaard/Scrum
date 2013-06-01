@@ -4,6 +4,7 @@
 .settings
 #ignore yii specific
 protected/runtime/*
+protected/config_*/*
 !protected/runtime/.gitignore
 protected/data/*.db
 protected/tests/report/*
