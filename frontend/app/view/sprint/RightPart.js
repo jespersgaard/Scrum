@@ -49,6 +49,18 @@ Ext.define('Scrum.view.sprint.RightPart', {
                                 itemId : 'profile-tab'
                             }
                         }),
+                        {
+                            title : 'Plan',
+                            itemId : 'plan',
+                            tabConfig : {
+                                itemId : 'plan-tab'
+                            },
+                            items : [
+                                Ext.create('Scrum.view.sprint.SprintlogOverview', {
+                                    minHeight : 160,
+                                }) 
+                            ]                            
+                        },
                         Ext.create('Scrum.view.CommentPanel', {
                             title : 'Comments',
                             itemId : 'comments',

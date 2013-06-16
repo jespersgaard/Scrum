@@ -44,10 +44,13 @@ class ChangeSprint extends CAction {
 		$id = $_GET['id'];
 		$userstory = UserStory::model()->findByPk($id);
 		$userstory->status = $status = UserStoryStatusCodes::OPEN;
+		$sprint = $userstory->getRelated('sprint');
+		$sprint->estimate -= $userstory->estimate;
+		$sprint->save();
 		$userstory->sprint_id = null;
 		$userstory->update_time = $update_time->getTimestamp();
 		$userstory->save();
-
+	
 		echo CJSON::encode(array('success' => true, 
 			'userstory' => array(
 				'id' => $userstory->id,

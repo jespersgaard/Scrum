@@ -64,6 +64,11 @@ Ext.define('Scrum.controller.sprint.SprintManager', {
                     this.activeTab = card;
                 }, scope : this}
             },
+            'scrum-sprint-manager #plan' : {
+                activate : { fn : function(overview){
+                    this.activeTab = overview;
+                }, scope : this}
+            },
             'scrum-sprint-manager scrum-commentpanel' : {
                 activate : { fn : function(commentPanel){
                     this.activeTab = commentPanel;
@@ -214,17 +219,23 @@ Ext.define('Scrum.controller.sprint.SprintManager', {
         var tabPanel = rightPart.down('#scrum-sprint-tab-panel');
         var profileTab;
         var profile, comments;
+        var sprintProfileController;
 
         rightPart.layout.setActiveItem(tabPanel);
         tabPanel.layout.setActiveItem('empty-panel');
-        if (sprint instanceof Scrum.model.Sprint)
-            this.getController('sprint.SprintProfile').setSprint(sprint);
-
+        if (sprint instanceof Scrum.model.Sprint){
+            sprintProfileController = this.getController('sprint.SprintProfile');
+            sprintProfileController.setSprint(sprint);
+        }
+            
         if (!this.activeTab || this.activeTab.itemId == 'profile'){
             tabPanel.layout.setActiveItem('profile');   
 
             profileTab = tabPanel.down('header').down('#profile-tab');
             profileTab.setText('Profile');
+        }
+        else if (this.activeTab.itemId == 'plan'){
+            plan = tabPanel.layout.setActiveItem('plan');
         }
         else if (this.activeTab.itemId == 'comments'){
             comments = tabPanel.layout.setActiveItem('comments');
@@ -238,9 +249,10 @@ Ext.define('Scrum.controller.sprint.SprintManager', {
     },
 
     showSprintCreateForm: function(button) {
-        var form = this.rightPart.layout.setActiveItem('scrum-sprint-create-form');
+        var form = this.rightPart.down('scrum-sprint-create-form');
         var project = this.project;
-
+        
+        this.rightPart.layout.setActiveItem('scrum-sprint-create-form');
         form.down('hiddenfield[name=project_id]').setRawValue(project.get('id'));
         form.down('statusbar').hide();
     },
@@ -261,6 +273,7 @@ Ext.define('Scrum.controller.sprint.SprintManager', {
                     var continueCreate;
 
                     sprint.set(form.getValues());
+                    sprint.set('id', action.result.sprint.id);
                     sprint.set('update_time', action.result.sprint.update_time);
                     sprint.set('status', action.result.sprint.status);
                     sprintsStore.add(sprint);			

@@ -7,7 +7,7 @@ st = Ext.create('Ext.data.Store', {
 	]
 })
 
-Ext.define('Scrum.view.userstory.form.AttachTeamForm', {
+Ext.define('Scrum.view.sprint.form.AttachTeamForm', {
 	extend : 'Ext.form.Panel',
 	title : 'Attach a team',
 	require : [

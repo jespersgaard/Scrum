@@ -1,54 +1,25 @@
-Ext.define('Scrum.view.userstory.SprintlogOverview', {
+Ext.define('Scrum.view.sprint.SprintlogOverview', {
 	extend : 'Ext.grid.Panel',
-	xtype : 'scrum-userstory-sprintlog-overview', 
+	xtype : 'scrum-sprintlog-overview', 
 	title : 'Sprint Overview',
+	cls : 'sprintlog-overview',
+	
 	forceFit : true,
 	require : [
-		'Scrum.view.userstory.form.AttachTeamForm',
+		'Scrum.view.sprint.form.AttachTeamForm',
 		'Ext.grid.plugin.CellEditing',
 		'Ext.grid.plugin.DragDrop'
 	],
 	tools : [
+		{ type : 'plus', action : 'attach', tooltipType : 'title', tooltip : 'Attach userstory'},
 		{ type : 'refresh', action : 'refresh', tooltipType : 'title', tooltip : 'Refresh overview'}
 	],
-	
 	bbar : {
 		xtype : 'pagingtoolbar',
 		itemId : 'paging-toolbar',
 		displayInfo: true,
         displayMsg: 'Displaying userstories {0} - {1} of {2}',
         emptyMsg: "No userstories to display",
-	},
-	onBeforeUserStoryDrop : function(node, data, overModel, dropPosition, dropHandlers){
-		var draggedModel = data.records[0];
-		var sprintSelect = this.down('combobox');
-		var activeSprintName = sprintSelect.getRawValue();
-		var activeSprint = sprintSelect.findRecordByDisplay(activeSprintName);
-		var activeSprintStatus = activeSprint.get('status').value;
-
-		var status = draggedModel.get('status');
-		var result;
-
-		if (status.value === Ext.data.Types.UserStoryStatus.OPEN)
-			return false;
-		if ((activeSprintStatus === Ext.data.Types.SprintStatus.COMPLETED) || (activeSprintStatus === Ext.data.Types.SprintStatus.CURRENT))
-			return false;
-
-		if (Ext.isEmpty(sprintSelect.getRawValue()))
-			return false;
-		
-		if ((Ext.isEmpty(overModel) || overModel.get('sprint')) && !draggedModel.get('sprint')){
-			return result;
-		}
-
-		return false;
-	},
-	onAfterUserStoryDrop : function(node, data, overModel){
-		var draggedModel = data.records[0];
-		var fn;
-		var result;
-
-		this.view.fireEvent('attachToSprint', draggedModel);
 	},
 	getAvailableUserStoryStatuses : function(cellEditing, event){
 		var activeEditor = event.column.getEditor();
@@ -62,11 +33,14 @@ Ext.define('Scrum.view.userstory.SprintlogOverview', {
 		}, this);
 	},
 	onBeforeEdit : function(cellEditing, event){
+		if (cellEditing.disabled)
+			return false;
+
 		if (event.field === 'status'){
 			this.getAvailableUserStoryStatuses.apply(this, arguments);
 			//fix : replace UserStoryStatus type object by value.display for valide view of cell edit
 			event.value = event.value.display;
-		}
+		}	
 	},
 	onValidateEdit : function(cellEditing, event){
 		var value = parseInt(event.value);
@@ -92,29 +66,18 @@ Ext.define('Scrum.view.userstory.SprintlogOverview', {
 		var me = this;
 
 		Ext.apply(this, {
-			tbar : {
-				items : [
-					{ 
-						xtype : 'combobox' ,
-						action : 'get_sprints',
-						displayField : 'name',
-						valueField : 'id', 
-						queryMode : 'local',
-						listConfig : {
-							tpl : new Ext.XTemplate('<tpl for="."><div class="x-boundlist-item">{name} <tpl if="this.isActive(status)">' + 
-							'<span class="combobox-item-sprint-status"><b> Active</b></span> ' + 
-                			'<tpl elseif="this.isCompleted(status)"><span class="combobox-item-sprint-status"><b> Completed</b></span></tpl></div></tpl>', 
-                			{
-                    			isActive : function(status){
-            						return status.value === Ext.data.Types.SprintStatus.CURRENT;
-            					},
-            					isCompleted : function(status){
-            						return status.value === Ext.data.Types.SprintStatus.COMPLETED;
-            					}
-            				})
-						}
-					}
-				]
+			viewConfig : {
+				emptyText : 'There are no userstories yet',
+				plugins : {
+					ptype : 'gridviewdragdrop',
+					dragGroup : 'sprintlogGridDDGroup',
+					dropGroup : 'backlogGridDDGroup',
+					dragText : 'Drag and drop to detach from sprint'
+				},
+				listeners : {
+					beforedrop : { fn : this.onBeforeUserStoryDrop, scope : this },
+					drop : { fn : this.onAfterUserStoryDrop, scope : this}
+				}
 			},
 			plugins : [
 				{ 
@@ -134,18 +97,6 @@ Ext.define('Scrum.view.userstory.SprintlogOverview', {
 					}
 				}
 			],
-			viewConfig : {
-				plugins : {
-            		ptype: 'gridviewdragdrop',
-            		dragGroup: 'sprintlogGridDDGroup',
-            		dropGroup: 'backlogGridDDGroup',
-            		dragText: 'Drag and drop to detach from sprint'
-	        	},
-				listeners : {
-					beforedrop : { fn : this.onBeforeUserStoryDrop  , scope : this},
-					drop : { fn : this.onAfterUserStoryDrop, scope : this}
-				}
-			},
 			columns : [
 				{ 
 					text : 'Name', dataIndex : 'name', 
