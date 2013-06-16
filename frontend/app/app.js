@@ -35,13 +35,54 @@ Ext.application({
         'userstory.Backlog',
         'userstory.UserStoryProfile',
         'sprint.SprintManager',
-        'sprint.SprintProfile'
+        'sprint.SprintProfile',
+        'team.TeamManager',
+        'team.UserProfile'
     ],
     views: [
         'Viewport',
     ],
     autoCreateViewport: true
 });
+//ExtJS 4.2 Tooltip width fix;
+Ext.override(Ext.tip.QuickTip, {
+        helperElId: 'ext-quicktips-tip-helper',
+        initComponent: function ()
+        {
+            var me = this;
+
+
+            me.target = me.target || Ext.getDoc();
+            me.targets = me.targets || {};
+            me.callParent();
+
+
+            // new stuff
+            me.on('move', function ()
+            {
+                var offset = me.hasCls('x-tip-form-invalid') ? 35 : 12,
+                    helperEl = Ext.fly(me.helperElId) || Ext.fly(
+                        Ext.DomHelper.createDom({
+                            tag: 'div',
+                            id: me.helperElId,
+                            style: {
+                                position: 'absolute',
+                                left: '-1000px',
+                                top: '-1000px',
+                                'font-size': '12px',
+                                'font-family': 'tahoma, arial, verdana, sans-serif'
+                            }
+                        }, Ext.getBody())
+                    );
+
+                if (me.html && (me.html !== helperEl.getHTML() || me.getWidth() !== (helperEl.dom.clientWidth + offset)))
+                {
+                    helperEl.update(me.html);
+                    me.setWidth(Ext.Number.constrain(helperEl.dom.clientWidth + offset, me.minWidth, me.maxWidth));
+                }
+            }, this);
+        }
+    });
 
 Ext.namespace('Scrum.util', 'Scrum.util.template', 'Scrum.util.template.date');
 Ext.namespace('Scrum.util', 'Scrum.util.debug');

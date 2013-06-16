@@ -5,6 +5,7 @@ Ext.define('Scrum.view.userstory.form.EditForm', {
 	padding : 10,
 	url : '/userstories/update',
 	require : [
+		'Scrum.view.userstory.form.PriorityCombobox',
 		'Ext.ux.statusbar.StatusBar'
 	],
 	tbar : Ext.create('Ext.ux.statusbar.StatusBar', {
@@ -18,57 +19,51 @@ Ext.define('Scrum.view.userstory.form.EditForm', {
 		statusBar.setStatus( { iconCls : 'x-status-error', text : '<span class="status-string">Fill required fields or correct invalids</span>'});
 		statusBar.show();
 	},
-	items : [
-		{ xtype : 'hiddenfield', name : 'id'},
-		{ 
-			xtype : 'textfield',
-			name : 'name',
-			width : 200,
-			allowBlank : false,
-			fieldLabel : 'Name', 
-			labelAlign : 'top'
-		},
-		{
-			xtype : 'container',
-			layout : { type : 'hbox', defaultMargins : '0 10 0 0'},
+	initComponent : function(){
+		Ext.apply(this, {
 			items : [
-				{
-					xtype : 'numberfield',
-					name: 'estimate',
-					labelAlign : 'top',
-					fieldLabel: 'Estimate',
+				{ xtype : 'hiddenfield', name : 'id'},
+				{ 
+					xtype : 'textfield',
+					name : 'name',
+					width : 200,
 					allowBlank : false,
-					maxValue: 99,
-					minValue: 0
+					fieldLabel : 'Name', 
+					labelAlign : 'top'
 				},
 				{
-					xtype : 'combo',
-					name : 'priority',
-					fieldLabel : 'Priority',
-					labelAlign : 'top',
-					allowBlank : false,
-					displayField : 'name',
-					valueField : 'value',
-					store : Ext.create('Ext.data.Store', {
-						fields : ['value', 'name'],
-						data : [
-							{ name : 'Low', value : 0},
-							{ name : 'Medium', value : 1},
-							{ name : 'High', value : 2} 
-						]
-					})
-				}		
+					xtype : 'container',
+					layout : { type : 'hbox', defaultMargins : '0 10 0 0'},
+					items : [
+						{
+							xtype : 'numberfield',
+							name: 'estimate',
+							labelAlign : 'top',
+							fieldLabel: 'Estimate',
+							allowBlank : false,
+							maxValue: 99,
+							minValue: 0
+						},
+						Ext.create('Scrum.view.userstory.form.PriorityCombobox', {
+							fieldLabel : 'Priority',
+							labelAlign : 'top',
+							name : 'priority'
+						})
+					]
+				},
+				{ 
+					xtype : 'htmleditor',
+					fieldLabel : 'Description',
+				 	height : 450,
+				 	width : 550,
+				 	labelAlign : 'top',
+				 	name : 'description'
+			 	}
 			]
-		},
-		{ 
-			xtype : 'htmleditor',
-			fieldLabel : 'Description',
-		 	height : 450,
-		 	width : 550,
-		 	labelAlign : 'top',
-		 	name : 'description'
-	 	}
-	],
+		});
+
+		this.callParent();
+	},
 	bbar : {
 		cls : 'scrum-form-bottom-bar'
 	},

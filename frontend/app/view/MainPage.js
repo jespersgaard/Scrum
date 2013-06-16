@@ -12,7 +12,7 @@ Ext.define('Scrum.view.MainPage', {
     },
     items : [
     	Ext.create('Scrum.view.TopPanel', { border : false}),
-    	Ext.create('Scrum.view.ContentPanel', { flex : 2, border : false})
+    	Ext.create('Scrum.view.ContentPanel', { flex : 1, border : false})
        // {html:'', cls : 'scrum-footer', height:35, border : false}
     ]
 });

@@ -21,6 +21,9 @@ Ext.define('Scrum.view.ContentPanel', {
 		}),
 		Ext.create('Scrum.view.sprint.SprintManager', {
 			itemId : 'sprint-manager'
+		}),
+		Ext.create('Scrum.view.team.TeamManager', {
+			itemId : 'team-manager'
 		})
 	]
 });

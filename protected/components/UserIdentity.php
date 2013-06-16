@@ -31,6 +31,9 @@ class UserIdentity extends CUserIdentity
             $this->setState('user-id', $record->getAttribute('id'));
             $this->setState('session_count', ++$record->session_count);
             $this->errorCode=self::ERROR_NONE;
+
+            $login_time = new DateTime();
+            $record->login_time = $login_time->getTimestamp();
             $record->save();
         }
         

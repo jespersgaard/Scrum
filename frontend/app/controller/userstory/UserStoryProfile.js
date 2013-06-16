@@ -74,12 +74,16 @@ Ext.define('Scrum.controller.userstory.UserStoryProfile', {
 		var rightTabPanel = this.backlog.down('tabpanel');
 		var profileTab = rightTabPanel.down('header').down('#profile-tab');
 		var form = card.layout.setActiveItem('scrum-userstory-edit-form');
+		var priorityCombobox = form.down('scrum-userstory-priority-combobox');
 
 		form.getForm().reset();
 		form.down('hiddenfield[name=id]').setRawValue(this.userstory.get('id'));
 		form.down('statusbar').hide();
 		profileTab.setText('Edit');
-		form.loadRecord(this.userstory); 
+		form.loadRecord(this.userstory);
+		priority = this.userstory.get('priority');
+		//fix: invalid priority display on form show
+		priorityCombobox.select(priority.value);
 	},
 	submitUserstoryEditForm : function(button){
 		var backlog = this.backlog;

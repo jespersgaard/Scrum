@@ -1,5 +1,5 @@
 <?php
-class UserStoryComment extends CActiveRecord {
+class UserComment extends CActiveRecord {
 	public $content;
 	public $post_date;
 
@@ -8,7 +8,7 @@ class UserStoryComment extends CActiveRecord {
 	}
 	
 	public function tableName(){
-		return 'userstory_comments_table';
+		return 'user_comments_table';
 	}
 	
 	public function primaryKey(){
@@ -17,22 +17,22 @@ class UserStoryComment extends CActiveRecord {
 	
 	public function relations(){
 		return array(
-			'userstory' => array(self::BELONGS_TO, 'Userstory', 'userstory_id'),
+			'user' => array(self::BELONGS_TO, 'UserRecord', 'user_id'),
 			'author' => array(self::BELONGS_TO, 'UserRecord', 'author_id')
 		);
 	}
 	
 	public function scopes(){
 		return array(
-			'byUserstory',
+			'byUser',
 			'since'
 		);
 	}
-	
-	public function byUserstory($userstoryId){
+
+	public function byUser($projectId,$userId){
 		$this->getDbCriteria()->mergeWith(array(
-			'condition' => 'userstory_id=:id',
-			'params' => array(':id' => $userstoryId)
+			'condition' => 'user_id=:user_id AND project_id=:project_id',
+			'params' => array(':user_id' => $userId, ':project_id' => $projectId)
 		));
 		return $this;
 	}

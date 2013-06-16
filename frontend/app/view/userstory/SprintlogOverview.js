@@ -4,6 +4,7 @@ Ext.define('Scrum.view.userstory.SprintlogOverview', {
 	title : 'Sprint Overview',
 	forceFit : true,
 	require : [
+		'Scrum.view.userstory.form.AttachTeamForm',
 		'Ext.grid.plugin.CellEditing',
 		'Ext.grid.plugin.DragDrop'
 	],
@@ -18,48 +19,6 @@ Ext.define('Scrum.view.userstory.SprintlogOverview', {
         displayMsg: 'Displaying userstories {0} - {1} of {2}',
         emptyMsg: "No userstories to display",
 	},
-	columns : [
-		{ 
-			text : 'Name', dataIndex : 'name', 
-			groupable : false
-		},
-		{ 
-			text : 'Estimate',
-			dataIndex : 'estimate',
-			groupable : false
-		},
-		{ 
-			text : 'Priority', dataIndex : 'priority',
-			groupable : false,
-			renderer : function(priority){
-				return priority.display;
-			}
-		},
-		{ 
-			text : 'Status', dataIndex : 'status',
-			groupable : false,
-			renderer : function(status){
-				return status.display;
-			},
-			editor : {
-				xtype : "combobox",
-				queryMode : 'local',
-				typeAhead : true, 
-				triggerAction : 'all',
-				selectOnTab : true,
-				store : Ext.data.Types.UserStoryStatus.getPairs(),
-				valueField : 'value',
-				displayField : 'display'
-			}
-		},
-		{ 
-			text : 'Update time', dataIndex : 'update_time',
-			groupable : false,
-			renderer : function(value){
-				return Scrum.util.template.getPostDate(value);
-			}
-		}
-	],
 	onBeforeUserStoryDrop : function(node, data, overModel, dropPosition, dropHandlers){
 		var draggedModel = data.records[0];
 		var sprintSelect = this.down('combobox');
@@ -130,6 +89,8 @@ Ext.define('Scrum.view.userstory.SprintlogOverview', {
 		);
 	},
 	initComponent : function(){
+		var me = this;
+
 		Ext.apply(this, {
 			tbar : {
 				items : [
@@ -184,7 +145,75 @@ Ext.define('Scrum.view.userstory.SprintlogOverview', {
 					beforedrop : { fn : this.onBeforeUserStoryDrop  , scope : this},
 					drop : { fn : this.onAfterUserStoryDrop, scope : this}
 				}
-			}
+			},
+			columns : [
+				{ 
+					text : 'Name', dataIndex : 'name', 
+					groupable : false
+				},
+				{ 
+					text : 'Estimate',
+					dataIndex : 'estimate',
+					groupable : false
+				},
+				{ 
+					text : 'Priority', dataIndex : 'priority',
+					groupable : false,
+					renderer : function(priority){
+						return priority.display;
+					}
+				},
+				{ 
+					text : 'Status', dataIndex : 'status',
+					groupable : false,
+					renderer : function(status){
+						return status.display;
+					},
+					editor : {
+						xtype : "combobox",
+						queryMode : 'local',
+						typeAhead : true, 
+						triggerAction : 'all',
+						selectOnTab : true,
+						store : Ext.data.Types.UserStoryStatus.getPairs(),
+						valueField : 'value',
+						displayField : 'display'
+					}
+				},
+				{ 
+					text : 'Update time', dataIndex : 'update_time',
+					groupable : false,
+					renderer : function(value){
+						return Scrum.util.template.getPostDate(value);
+					}
+				},
+				{
+					text : 'Actions', 
+					xtype : 'actioncolumn',
+		            title : 'Actions',
+		            iconCls : 'action-icon',
+		            menuDisabled : true,
+		            width : 100,
+		            items : [
+		            	{
+		            		tooltip : 'Assign team', iconCls : 'icon-team',
+		            		handler : function(view, rowIndex, colIndex, item, event, record){
+		            			var attachTeamWin = Ext.create('Ext.window.Window', {
+		            				height : 300,
+		            				width : 600,
+		            				title : 'Attach a team',
+		            				modal : true,
+		            				items : [
+		            					Ext.create('Scrum.view.userstory.form.AttachTeamForm')
+		            				]
+		            			});
+
+		            			attachTeamWin.show();
+		            		}
+		            	}
+		            ]
+				}
+			]
 		});
 
 		this.callParent();

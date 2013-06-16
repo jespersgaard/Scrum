@@ -27,7 +27,10 @@ Ext.define('Scrum.controller.TopPanel', {
 				activate : { fn : this.showBacklog, scope : this}
 			},
 			'scrum-sprint-manager' : {
-				activate : { fn : this.showSprintManager , scope : this}
+				activate : { fn : this.showSprintManager , scope : this } 
+			},
+			'scrum-team-manager' : {
+				activate : { fn : this.showTeamManager, scope : this }
 			},
 			'scrum-projects-dropdown > menuitem[action=projectView]' : {
 				click : { fn : this.onProjectClick, scope : this}
@@ -43,6 +46,9 @@ Ext.define('Scrum.controller.TopPanel', {
 			},
 			'scrum-toppanel button[action=sprints]' : {
 				click : { fn : this.onSprintsClick, scope : this}
+			},
+			'scrum-toppanel button[action=team]' : {
+				click : { fn : this.onTeamClick, scope : this}
 			},
 			'scrum-account-dropdown > menuitem[action=logout]' : {
 				click : { fn : this.Logout, scope : this}
@@ -175,6 +181,10 @@ Ext.define('Scrum.controller.TopPanel', {
 		this.contentPanel.layout.setActiveItem(0);
 		this.contentPanel.layout.setActiveItem('sprint-manager');	
 	},
+	onTeamClick : function(){
+		this.contentPanel.layout.setActiveItem(0);
+		this.contentPanel.layout.setActiveItem('team-manager');
+	},
 	showProjectProfile : function(profile){
 		profile.fireEvent('viewProject', this.selectedProject);
 	},
@@ -183,6 +193,9 @@ Ext.define('Scrum.controller.TopPanel', {
 	},
 	showSprintManager : function(sprintManager){
 		sprintManager.fireEvent('viewSprintManager', this.selectedProject);
+	},
+	showTeamManager : function(teamManager){
+		teamManager.fireEvent('viewTeamManager', this.selectedProject);
 	},
 	Logout : function(){
 		var conn = Ext.create('Ext.data.Connection');

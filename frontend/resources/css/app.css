@@ -201,6 +201,12 @@
 	background-image : url('/frontend/resources/images/common/16/ok.png');
 	background-repeat : repeat-y;			
 }
+
+.icon-team {
+	background-image : url('/frontend/resources/images/common/16/brainstorming.png');
+	background-repeat : repeat-y;
+}
+
 /*status-icons*/
 .x-status-ok  {
 	background-image : url('/frontend/resources/images/common/16/ok.png');

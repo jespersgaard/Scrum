@@ -1,8 +1,6 @@
 <?php
-//связь "пользователь-проект"
+
 class ProjectAssign extends CActiveRecord {
-	public $user;
-	public $product;
 	
 	public static function model($className=__CLASS__){
 		return parent::model($className);
@@ -18,8 +16,8 @@ class ProjectAssign extends CActiveRecord {
 	
 	public function relations(){
 		return array(
-			'user' => array(self::HAS_ONE, 'UserRecord', 'user_id'),
-			'product' => array(self::HAS_ONE, 'Product', 'product_id')
+			'user' => array(self::BELONGS_TO, 'UserRecord', 'user_id'),
+			'project' => array(self::BELONGS_TO, 'Project', 'project_id')
 		);
 	}
 }

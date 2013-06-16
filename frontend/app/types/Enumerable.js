@@ -25,7 +25,7 @@ Ext.define('Scrum.types.Enumerable', {
 	   	 	getValues : function(){
 	   	 		var arr = [];
 	   	 		for (value in this.VD_PAIRS){
-	   	 			arr.push(value);
+	   	 			arr.push(parseInt(value));
 	   	 		}
 
 	   	 		return arr;
@@ -34,7 +34,7 @@ Ext.define('Scrum.types.Enumerable', {
 	   	 	getDisplays : function(){
 	   	 		var arr = [];
 	   	 		for (value in this.VD_PAIRS){
-	   	 			arr.push(this.VD_PAIRS[value]);
+	   	 			arr.push(this.VD_PAIRS[parseInt(value)]);
 	   	 		}
 
 	   	 		return arr;	
@@ -43,7 +43,7 @@ Ext.define('Scrum.types.Enumerable', {
 	   	 	getHashes : function(){
 	   	 		var arr = [];
 	   	 		for (value in this.VD_PAIRS){
-	   	 			arr.push({ value : value, display : this.VD_PAIRS[value]})
+	   	 			arr.push({ value : parseInt(value), display : this.VD_PAIRS[value]})
 	   	 		}
 
 	   	 		return arr;
@@ -52,6 +52,7 @@ Ext.define('Scrum.types.Enumerable', {
 	   	 	getPairs : function(){
 	   	 		var arr = [];
 	   	 		for (value in this.VD_PAIRS){
+	   	 			value = parseInt(value);
 	   	 			arr.push([value, this.VD_PAIRS[value]]);
 	   	 		}
 
@@ -60,6 +61,7 @@ Ext.define('Scrum.types.Enumerable', {
 	   	 		
 	   	 	getFromValue : function(value){
 	   	 		if (value in this.VD_PAIRS){
+	   	 			value = parseInt(value);
 	   	 			return { value : value, display : this.VD_PAIRS[value]};
 	   	 		}
 

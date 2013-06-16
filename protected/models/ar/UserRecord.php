@@ -8,6 +8,7 @@ class UserRecord extends CActiveRecord {
 	//session_information
 	public $session_count;
 	public $session_key;
+	public $login_time;
 	//user settings;
 	public $date_format = 'dd/mm/yy';
 	public $time_format = 'hh:mm:ss';
@@ -35,5 +36,12 @@ class UserRecord extends CActiveRecord {
 					 'active_project' => array(self::BELONGS_TO, 'Project', 'active_project_id'));
 	}
 	
-	
+	public function byProject($projectId){
+		$this->getDbCriteria()->mergeWith(array(
+				'condition' => '`'.$this->getTableAlias().'`.`project_id`=:project_id AND `'.$this->getTableAlias().'`.`dropped`=0', 
+				'params' => array(':project_id' => $projectId)
+		));
+
+		return $this;
+	}
 }

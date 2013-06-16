@@ -16,6 +16,10 @@ Ext.define('Scrum.view.TopPanel' , {
 			text : 'Sprints',
 			action : 'sprints'
 		},
+		{
+			text : 'Team',
+			action : 'team'
+		},
 		'->',
 		Ext.create('Scrum.view.MyAccountDropdown')
 	],
